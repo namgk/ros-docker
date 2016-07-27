@@ -1,0 +1,29 @@
+version: '2'
+services:
+  roscore:
+    image: nhong/ros:core
+    network_mode: ros
+    container_name: roscore
+  roscam:
+    image: nhong/ros:usbcam
+    network_mode: ros
+    container_name: roscam
+    depends_on:
+     - roscore
+    environment:
+     - ROS_MASTER_URI=http://roscore:11311
+     - ROS_HOSTNAME=roscam
+    volumes:
+     - /dev/video0:/dev/video0
+    privileged: true
+  roswebvid:
+    image: nhong/ros:webvideo
+    network_mode: ros
+    container_name: roswebvid
+    depends_on:
+     - roscore
+    environment:
+     - ROS_MASTER_URI=http://roscore:11311
+     - ROS_HOSTNAME=roswebvid
+    ports:
+     - 8888:8080

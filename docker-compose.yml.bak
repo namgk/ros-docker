@@ -1,0 +1,26 @@
+version: '2'
+services:
+  roscore:
+    image: ros/jade-ros-core
+    networks:
+     - ros
+  roscam:
+    image: nhong/ros:usbcam
+    networks:
+     - ros
+    environment:
+     - ROS_MASTER_URI=http://roscore:11311
+     - ROS_HOSTNAME=roscam
+    depends_on:
+      - roscore
+  roswebvid:
+    image: nhong/ros:webvideo
+    networks:
+     - ros
+    environment:
+     - ROS_MASTER_URI=http://roscore:11311
+     - ROS_HOSTNAME=roswebvid
+    depends_on:
+      - roscore
+
+
